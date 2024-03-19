@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-BudjetointiHarjoitustyoApplication<budjetointi-harjoitustyo>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.romaalie.budjetointiharjoitustyo.BudjetointiHarjoitustyoApplication",
+            "projectName": "budjetointi-harjoitustyo",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
