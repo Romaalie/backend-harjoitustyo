@@ -29,7 +29,7 @@ class KayttajaRepoTests {
     @Autowired
     private KayttajaRepository kayttajaRepository;
 
-    //Testataan käyttäjän luominen ja haku tietokannasta.
+    //Testaa tallennusta tietokantaan ja automaattista ID:n luomista sekä hakua tietokannasta.
     @Test
     public void kayttajaLuontiTesti() {
 
@@ -46,7 +46,7 @@ class KayttajaRepoTests {
 
     }
 
-    //Testataan käyttäjän tietojen muuttaminen.
+    //Testaa tiedon päivittämistä tietokantaan.
     @Test
     public void kayttajaMuutosTesti() {
 
@@ -67,6 +67,7 @@ class KayttajaRepoTests {
 
     }
 
+    //Testaa tiedon poistamista tietokannasta.
     @Test
     public void kayttajaPoistoTesti() {
         //Luodaan uusi käyttäjä ja tallennetaan se tietokantaan.

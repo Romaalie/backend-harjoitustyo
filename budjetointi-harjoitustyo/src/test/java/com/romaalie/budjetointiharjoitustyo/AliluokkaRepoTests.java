@@ -40,7 +40,7 @@ class AliluokkaRepoTests {
 
     @BeforeEach
     public void setUp() {
-        //DANGERZONE, tyhjennetään pääluokka ja aliluokka testejä varten.
+        //DANGERZONE, tyhjennetään pääluokka ja aliluokka tietokantataulut testejä varten.
         // Ehkä vaihdetaan tämä kun siirrytään ulkoiseen tietokantaan.
         paaluokkaRepository.deleteAll();
         aliluokkaRepository.deleteAll();
@@ -50,9 +50,9 @@ class AliluokkaRepoTests {
         paaluokkaRepository.save(paaluokka);
     }
 
-    //Testaa tallennusta tietokantaan ja automaattista ID:n luomista.
+    //Testaa tallennusta tietokantaan ja automaattista ID:n luomista sekä hakua tietokannasta.
     @Test
-    public void tallennusTesti() {
+    public void aliluokkaTallennusTesti() {
         //Luodaan kaksi uutta aliluokkaa käyttäen valmista pääluokkaa.
         Aliluokka aliluokka = new Aliluokka("Vaatteet", paaluokka);
         Aliluokka aliluokka2 = new Aliluokka("Lelut", paaluokka);
@@ -82,9 +82,9 @@ class AliluokkaRepoTests {
         assertNotEquals("Vaatteet", haettuAliluokka2.get().getNimi());
     }
 
-    //Testaa tietokannan tiedon päivittämistä
+    //Testaa tiedon päivittämistä tietokantaan.
     @Test
-    public void paivitysTesti() {
+    public void aliluokkaMuutosTesti() {
         //Luodaan kaksi uutta aliluokkaa käyttäen valmista pääluokkaa.
         Aliluokka aliluokka = new Aliluokka("Vaatteet", paaluokka);
         Aliluokka aliluokka2 = new Aliluokka("Lelut", paaluokka);
@@ -110,8 +110,9 @@ class AliluokkaRepoTests {
         assertEquals("Mysteeriarvo", haettuAliluokka2.get().getNimi());
     }
 
+    //Testaa tiedon poistamista tietokannasta.
     @Test
-    public void poistoTesti() {
+    public void aliluokkaPoistoTesti() {
         //Luodaan kaksi uutta aliluokkaa käyttäen valmista pääluokkaa.
         Aliluokka aliluokka = new Aliluokka("Vaatteet", paaluokka);
         Aliluokka aliluokka2 = new Aliluokka("Lelut", paaluokka);
