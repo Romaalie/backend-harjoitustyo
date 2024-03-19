@@ -28,7 +28,7 @@ import com.romaalie.budjetointiharjoitustyo.domain.PaaluokkaRepository;
  * @Rollback(true)
  * @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
  */
-class AliluokkaTests {
+class AliluokkaRepoTests {
 
     @Autowired
     private AliluokkaRepository aliluokkaRepository;
@@ -53,7 +53,7 @@ class AliluokkaTests {
     //Testaa tallennusta tietokantaan ja automaattista ID:n luomista.
     @Test
     public void tallennusTesti() {
-        //Luo kaksi uutta aliluokkaa käyttäen valmista pääluokkaa.
+        //Luodaan kaksi uutta aliluokkaa käyttäen valmista pääluokkaa.
         Aliluokka aliluokka = new Aliluokka("Vaatteet", paaluokka);
         Aliluokka aliluokka2 = new Aliluokka("Lelut", paaluokka);
 
@@ -85,7 +85,7 @@ class AliluokkaTests {
     //Testaa tietokannan tiedon päivittämistä
     @Test
     public void paivitysTesti() {
-        //Luo kaksi uutta aliluokkaa käyttäen valmista pääluokkaa.
+        //Luodaan kaksi uutta aliluokkaa käyttäen valmista pääluokkaa.
         Aliluokka aliluokka = new Aliluokka("Vaatteet", paaluokka);
         Aliluokka aliluokka2 = new Aliluokka("Lelut", paaluokka);
 
@@ -112,7 +112,7 @@ class AliluokkaTests {
 
     @Test
     public void poistoTesti() {
-        //Luo kaksi uutta aliluokkaa käyttäen valmista pääluokkaa.
+        //Luodaan kaksi uutta aliluokkaa käyttäen valmista pääluokkaa.
         Aliluokka aliluokka = new Aliluokka("Vaatteet", paaluokka);
         Aliluokka aliluokka2 = new Aliluokka("Lelut", paaluokka);
 
