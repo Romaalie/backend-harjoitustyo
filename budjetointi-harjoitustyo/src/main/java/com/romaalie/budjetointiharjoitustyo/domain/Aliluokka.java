@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Aliluokka {
@@ -20,12 +21,13 @@ public class Aliluokka {
 
     @ManyToOne()
     @JoinColumn(name = "paaluokkaid")
+    @NotNull
     private Paaluokka paaluokka;
 
     public Aliluokka() {
     }
 
-    public Aliluokka(@NotBlank String nimi, Paaluokka paaluokka) {
+    public Aliluokka(@NotBlank String nimi, @NotNull Paaluokka paaluokka) {
         super();
         this.nimi = nimi;
         this.paaluokka = paaluokka;

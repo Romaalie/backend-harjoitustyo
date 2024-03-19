@@ -8,8 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class Menoera {
@@ -19,7 +19,7 @@ public class Menoera {
     private Long id;
 
     @NotNull
-    @Min(value = 1, message = "Laita positiivinen hinta")
+    @Positive
     private double hinta;
 
     @NotNull
@@ -29,17 +29,19 @@ public class Menoera {
 
     @ManyToOne()
     @JoinColumn(name = "maksajaid")
+    @NotNull
     private Kayttaja maksaja;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "paaluokkaid")
     private Paaluokka paaluokka;
 
     public Menoera() {
     }
 
-    public Menoera(@NotNull @Min(value = 1, message = "Laita positiivinen hinta") double hinta,
-            @NotNull LocalDate aikaLeima, String lisatietoja, Kayttaja maksaja, Paaluokka paaluokka) {
+    public Menoera(@NotNull @Positive double hinta, @NotNull LocalDate aikaLeima, String lisatietoja, @NotNull Kayttaja maksaja,
+           @NotNull Paaluokka paaluokka) {
         this.hinta = hinta;
         AikaLeima = aikaLeima;
         this.lisatietoja = lisatietoja;
