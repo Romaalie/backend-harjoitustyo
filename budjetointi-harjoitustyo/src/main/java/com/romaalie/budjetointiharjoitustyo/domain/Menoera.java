@@ -23,7 +23,7 @@ public class Menoera {
     private double hinta;
 
     @NotNull
-    private LocalDate AikaLeima;
+    private LocalDate aikaLeima;
 
     private String lisatietoja;
 
@@ -37,16 +37,22 @@ public class Menoera {
     @JoinColumn(name = "paaluokkaid")
     private Paaluokka paaluokka;
 
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "aliluokkaid")
+    private Aliluokka aliluokka;
+
     public Menoera() {
     }
 
     public Menoera(@NotNull @Positive double hinta, @NotNull LocalDate aikaLeima, String lisatietoja, @NotNull Kayttaja maksaja,
-           @NotNull Paaluokka paaluokka) {
+            @NotNull Paaluokka paaluokka, @NotNull Aliluokka aliluokka) {
         this.hinta = hinta;
-        AikaLeima = aikaLeima;
+        this.aikaLeima = aikaLeima;
         this.lisatietoja = lisatietoja;
         this.maksaja = maksaja;
         this.paaluokka = paaluokka;
+        this.aliluokka = aliluokka;
     }
 
     public Long getId() {
@@ -66,11 +72,11 @@ public class Menoera {
     }
 
     public LocalDate getAikaLeima() {
-        return AikaLeima;
+        return aikaLeima;
     }
 
     public void setAikaLeima(LocalDate aikaLeima) {
-        AikaLeima = aikaLeima;
+        this.aikaLeima = aikaLeima;
     }
 
     public String getLisatietoja() {
@@ -97,10 +103,18 @@ public class Menoera {
         this.paaluokka = paaluokka;
     }
 
+    public Aliluokka getAliluokka() {
+        return aliluokka;
+    }
+
+    public void setAliluokka(Aliluokka aliluokka) {
+        this.aliluokka = aliluokka;
+    }
+
     @Override
     public String toString() {
-        return "Menoera [id=" + id + ", hinta=" + hinta + ", AikaLeima=" + AikaLeima + ", lisatietoja=" + lisatietoja
-                + ", maksaja=" + maksaja + ", paaluokka=" + paaluokka + "]";
+        return "Menoera [id=" + id + ", hinta=" + hinta + ", aikaLeima=" + aikaLeima + ", lisatietoja=" + lisatietoja
+                + ", maksaja=" + maksaja + ", paaluokka=" + paaluokka + ", aliluokka=" + aliluokka + "]";
     }
 
 }

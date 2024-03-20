@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <title>Main</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+    <h1 th:text="'Tervetuloa ' + ${nimi}">Tervetuloa</h1>
+    <table border="2">
+        <thead>
+            <tr>
+                <th>Pvm</th>
+                <th>Pääluokka</th>
+                <th>Aliluokka</th>
+                <th>Summa</th>
+                <th>Maksaja</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="menoera : ${menoerat}">
+                <td th:text="${menoera.aikaLeima}"></td>
+                <td th:text="${menoera.paaluokka.nimi}"></td>
+                <td th:text="${menoera.paaluokka.aliluokat.get(0).nimi}"></td>
+                <td th:text="${menoera.hinta}"></td>
+                <td th:text="${menoera.maksaja.nimi}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>

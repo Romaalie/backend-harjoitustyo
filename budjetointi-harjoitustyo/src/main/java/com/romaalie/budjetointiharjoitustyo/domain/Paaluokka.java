@@ -70,7 +70,7 @@ public class Paaluokka {
 
     @Override
     public String toString() {
-        return "Paaluokka [id=" + id + ", nimi=" + nimi + ", menoerat=" + menoerat + ", aliluokat=" + aliluokat + "]";
+        return "Paaluokka [id=" + id + ", nimi=" + nimi + "]";
     }
 
 }
