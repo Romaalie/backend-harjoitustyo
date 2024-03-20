@@ -4,12 +4,13 @@
 <head>
     <title>Main</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 
 <body>
     <h1 th:text="'Tervetuloa ' + ${nimi}">Tervetuloa</h1>
-    <table border="2">
-        <thead>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
             <tr>
                 <th>Pvm</th>
                 <th>Pääluokka</th>

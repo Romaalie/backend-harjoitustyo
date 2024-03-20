@@ -42,6 +42,7 @@ class MenoeraRepoTests {
     KayttajaRepository kayttajaRepository;
     private Kayttaja maksaja;
 
+
     @BeforeEach
     public void setUp() {
         //DANGERZONE, tyhjennetään pääluokka, kayttaja ja menoerä tietokantataulut testejä varten.
@@ -51,13 +52,14 @@ class MenoeraRepoTests {
         menoeraRepository.deleteAll();
         //DANGERZONE
 
-        //Luodaan uusi pääluokka nimeltään Lapset ja tallennetaan se tietokantaan.
+        //Luodaan uusi pääluokka ja tallennetaan se tietokantaan.
         paaluokka = new Paaluokka("Lapset");
         paaluokkaRepository.save(paaluokka);
 
         //Luodaan uusi käyttäjä ja tallennetaan se tietokantaan.
         maksaja = new Kayttaja("testikayttaja", "$2y$10$q2AlKdGpIEmqCGYgGyYdYeuPbChJZ0FOGYw7wlBT1GcdcYPIJQyUi", "kayttaja");
         kayttajaRepository.save(maksaja);
+
 
     }
 

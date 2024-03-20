@@ -1,16 +1,11 @@
 package com.romaalie.budjetointiharjoitustyo.domain;
 
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -28,10 +23,6 @@ public class Aliluokka {
     @JoinColumn(name = "paaluokkaid")
     @NotNull
     private Paaluokka paaluokka;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "aliluokka")
-    @Valid
-    private List<Menoera> menoerat;
 
     public Aliluokka() {
     }
@@ -64,14 +55,6 @@ public class Aliluokka {
 
     public void setPaaluokka(Paaluokka paaluokka) {
         this.paaluokka = paaluokka;
-    }
-
-    public List<Menoera> getMenoerat() {
-        return menoerat;
-    }
-
-    public void setMenoerat(List<Menoera> menoerat) {
-        this.menoerat = menoerat;
     }
 
     @Override
