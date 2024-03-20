@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <title>Lisays</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Lisää uusi menoerä</h1>
+        <div class="col-md-4">
+            <form th:object="${menoera}" th:action="@{/lisaa}" method="post">
+                <div class="form-group">
+                    <label for="aikaLeima">Päivämäärä</label>
+                    <input type="text" class="form-control" id="aikaLeima" name="aikaLeima" placeholder="YYYY-MM-DD" required>
+                </div>
+                <div class="form-group">
+                    <label for="paaluokka">Pääluokka</label>
+                    <select class="form-control" id="paaluokka" name="paaluokka" onchange="populateAliluokka()" required>
+                        <option value="">Valitse pääluokka...</option>
+                        <option th:each="paaluokka : ${paaluokat}" th:value="${paaluokka.id}" th:text="${paaluokka.nimi}"></option>
+                    </select>
+                </div>
+                <div class="form-group" id="aliluokkaGroup" style="display: none;">
+                    <label for="aliluokka">Aliluokka</label>
+                    <select class="form-control" id="aliluokka" name="aliluokka">
+                        <option value="">Valitse aliluokka</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="summa">Summa</label>
+                    <input type="number" class="form-control" id="summa" name="summa" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="maksaja">Maksaja</label>
+                    <input type="text" class="form-control" id="maksaja" name="maksaja" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Tallenna</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function populateAliluokka() {
+            var paaluokkaId = $("#paaluokka").val();
+            if (paaluokkaId) {
+                $.ajax({
+                    url: "/getAliluokat/" + paaluokkaId,
+                    type: "GET",
+                    success: function (data) {
+                        var aliluokkaDropdown = $("#aliluokka");
+                        aliluokkaDropdown.empty();
+                        aliluokkaDropdown.append('<option value="">Valitse aliluokka</option>');
+                        $.each(data, function (index, aliluokka) {
+                            aliluokkaDropdown.append('<option value="' + aliluokka.id + '">' + aliluokka.nimi + '</option>');
+                        });
+                        $("#aliluokkaGroup").show();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                    }
+                });
+            } else {
+                $("#aliluokka").empty();
+                $("#aliluokkaGroup").hide();
+            }
+        }
+    </script>
+</body>
+
+</html>

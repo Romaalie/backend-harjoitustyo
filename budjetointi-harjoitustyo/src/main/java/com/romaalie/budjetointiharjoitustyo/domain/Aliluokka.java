@@ -1,5 +1,7 @@
 package com.romaalie.budjetointiharjoitustyo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +24,7 @@ public class Aliluokka {
     @ManyToOne()
     @JoinColumn(name = "paaluokkaid")
     @NotNull
+    @JsonIgnore
     private Paaluokka paaluokka;
 
     public Aliluokka() {

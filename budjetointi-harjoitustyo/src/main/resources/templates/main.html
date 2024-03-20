@@ -5,10 +5,26 @@
     <title>Main</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- Sortaus metodin tyylittelyyn
+    <style>
+        th.asc::after {
+            content: ' ▲';
+        }
+
+        th.desc::after {
+            content: ' ▼';
+        }
+
+        th.sortable {
+            cursor: pointer;
+        }
+    </style>
+    -->
 </head>
 
 <body>
     <h1 th:text="'Tervetuloa ' + ${nimi}">Tervetuloa</h1>
+    <!-- Nappulat navigointiin -->
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
             <tr>
@@ -17,6 +33,13 @@
                 <th>Aliluokka</th>
                 <th>Summa</th>
                 <th>Maksaja</th>
+                <!-- Sortaus metodille
+                <th class="sortable">Pvm</th>
+                <th class="sortable">Pääluokka</th>
+                <th class="sortable">Aliluokka</th>
+                <th class="sortable">Summa</th>
+                <th class="sortable">Maksaja</th>
+                -->
             </tr>
         </thead>
         <tbody>
@@ -26,7 +49,50 @@
                 <td th:text="${menoera.paaluokka.aliluokat.get(0).nimi}"></td>
                 <td th:text="${menoera.hinta}"></td>
                 <td th:text="${menoera.maksaja.nimi}"></td>
+                <td class="col col-sm-1"><a class="btn btn-secondary"
+                        th:href="@{/muokkaa/{id}(id=${menoera.id})}">Muokkaa</a></td>
+                <td class="col col-sm-1"><a class="btn btn-danger"
+                        th:href="@{/poista/{id}(id=${menoera.id})}">Poista</a></td>
             </tr>
         </tbody>
     </table>
+    <a href="/lisays" class="btn btn-success">Lisaa</a>
+    <!--Sortaus metodi jolla voi järjestää sarakkeen nousevaan tai laskevaan järjestykseen, ChatGPT=Ei arvosteluun/vain omaan käyttöön 
+
+    jQuery kirjasto CDN:n kautta mahdollistamaan scripti
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Function to sort table rows based on column index and order
+            function sortTable(table, column, asc) {
+                var tbody = table.find('tbody');
+                tbody.find('tr').sort(function (a, b) {
+                    if (asc) {
+                        return $('td:eq(' + column + ')', a).text().localeCompare($('td:eq(' + column + ')', b).text());
+                    } else {
+                        return $('td:eq(' + column + ')', b).text().localeCompare($('td:eq(' + column + ')', a).text());
+                    }
+                }).appendTo(tbody);
+            }
+
+            // Handle click on table header to sort
+            $('th').click(function () {
+                var table = $(this).closest('table');
+                var index = $(this).index();
+                var asc = $(this).hasClass('asc');
+
+                // Remove 'asc' and 'desc' classes from all headers
+                table.find('th').removeClass('asc desc');
+
+                // Toggle 'asc' or 'desc' class for the clicked header
+                $(this).toggleClass('asc', !asc).toggleClass('desc', asc);
+
+                // Sort the table
+                sortTable(table, index, !asc);
+            });
+        });
+    </script>
+    -->
+
 </body>
