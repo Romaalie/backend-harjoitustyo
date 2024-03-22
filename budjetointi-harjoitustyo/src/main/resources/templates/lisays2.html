@@ -1,0 +1,69 @@
+<!--TÄMÄ ON VANHA JA VAIN TESTAUSTA VARTEN-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <title>Lisäys 2</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Include Bootstrap Datepicker CSS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Lisää uusi Menoera</h1>
+        <div class="col-md-6">
+            <form th:object="${menoera}" th:action="@{/lisaa2}" action="#" method="post">
+                <label for="aikaLeima">Päivämäärä</label>
+                <input type="text" id="aikaLeima" th:field="*{aikaLeima}" class="form-control" required />
+
+                <label for="paaluokka">Pääluokka</label>
+                <select id="paaluokka" th:field="*{paaluokka}" class="form-control" required>
+                    <option th:each="paaluokka : ${paaluokat}" th:value="${paaluokka.id}" th:text="${paaluokka.nimi}">
+                    </option>
+                </select>
+
+                <label for="aliluokka">Aliluokka</label>
+                <select id="aliluokka" th:field="*{aliluokkaNimi}" class="form-control" required>
+                    <option th:each="aliluokka : ${aliluokat}" th:value="${aliluokka.nimi}" th:text="${aliluokka.nimi}">
+                    </option>
+                </select>
+
+                <label for="hinta">Hinta</label>
+                <input type="text" id="hinta" th:field="*{hinta}" class="form-control" required />
+
+                <label for="maksaja">Maksaja</label>
+                <select id="maksaja" th:field="*{maksaja}" class="form-control" required>
+                    <option value="">Valitse maksaja...</option>
+                    <option th:each="kayttaja : ${kayttajat}" th:value="${kayttaja.id}" th:text="${kayttaja.nimi}">
+                    </option>
+                </select>
+                <button type="submit" class="btn btn-primary">Tallenna</button>
+                <a th:href="@{/main}" class="btn btn-secondary">Palaa pääsivulle</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- Initialize Datepicker -->
+    <script>
+        $(document).ready(function () {
+            $('#aikaLeima').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                endDate: new Date()
+            });
+        });
+    </script>
+</body>
+
+</html>

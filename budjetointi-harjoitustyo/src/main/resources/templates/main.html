@@ -46,7 +46,7 @@
             <tr th:each="menoera : ${menoerat}">
                 <td th:text="${menoera.aikaLeima}"></td>
                 <td th:text="${menoera.paaluokka.nimi}"></td>
-                <td th:text="${menoera.paaluokka.aliluokat.get(0).nimi}"></td>
+                <td th:text="${menoera.aliluokkaNimi}"></td>
                 <td th:text="${menoera.hinta}"></td>
                 <td th:text="${menoera.maksaja.nimi}"></td>
                 <td class="col col-sm-1"><a class="btn btn-secondary"
@@ -56,8 +56,12 @@
             </tr>
         </tbody>
     </table>
-    <a href="/lisays" class="btn btn-success">Lisaa</a>
-    <!--Sortaus metodi jolla voi järjestää sarakkeen nousevaan tai laskevaan järjestykseen, ChatGPT=Ei arvosteluun/vain omaan käyttöön 
+    <a href="/lisays" class="btn btn-success">Lisää</a>
+    <!-- TÄMÄ ON VANHA JA VAIN TESTAUSTA VARTEN
+    <a href="/lisays2" class="btn btn-success">Lisää2</a>
+    -->
+    
+    <!--Sortaus metodi jolla voi järjestää sarakkeen nousevaan tai laskevaan järjestykseen, ChatGPT=>Ei arvosteluun/vain omaan käyttöön 
 
     jQuery kirjasto CDN:n kautta mahdollistamaan scripti
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.romaalie.budjetointiharjoitustyo.domain.Aliluokka;
+import com.romaalie.budjetointiharjoitustyo.domain.AliluokkaRepository;
 import com.romaalie.budjetointiharjoitustyo.domain.Kayttaja;
 import com.romaalie.budjetointiharjoitustyo.domain.KayttajaRepository;
 import com.romaalie.budjetointiharjoitustyo.domain.Menoera;
@@ -42,6 +44,10 @@ class MenoeraRepoTests {
     KayttajaRepository kayttajaRepository;
     private Kayttaja maksaja;
 
+    @Autowired
+    AliluokkaRepository aliluokkaRepository;
+    private Aliluokka aliluokka;
+
 
     @BeforeEach
     public void setUp() {
@@ -60,6 +66,12 @@ class MenoeraRepoTests {
         maksaja = new Kayttaja("testikayttaja", "$2y$10$q2AlKdGpIEmqCGYgGyYdYeuPbChJZ0FOGYw7wlBT1GcdcYPIJQyUi", "kayttaja");
         kayttajaRepository.save(maksaja);
 
+        //Luodaan uusi aliluokka ja tallennetaan se tietokantaan.
+        aliluokka = new Aliluokka("Lelut", paaluokka);
+        aliluokkaRepository.save(aliluokka);
+        paaluokka.addAliluokka(aliluokka);
+        paaluokkaRepository.save(paaluokka);
+
 
     }
 
@@ -68,14 +80,16 @@ class MenoeraRepoTests {
     public void menoeraLuontiTesti() {
 
         //Luodaan uusi menoerä ja tallennetaan se tietokantaan.
-        Menoera menoera = new Menoera(10.00, LocalDate.parse("2024-03-03"), "Uusi nuija nukutukseen", maksaja, paaluokka);
+        Menoera menoera = new Menoera(10.00, LocalDate.parse("2024-03-03"), "Uusi nuija nukutukseen", maksaja, paaluokka, aliluokka);
         menoeraRepository.save(menoera);
 
         //Haetaan menoerä tietokannasta. Näin varmistetaan, ettei käytetä välimuistin tietoja.
+        
         Optional<Menoera> haettuMenoera = menoeraRepository.findById(menoera.getId());
-
+        
         assertTrue(haettuMenoera.isPresent());
         assertEquals("Uusi nuija nukutukseen", haettuMenoera.get().getLisatietoja());
+        assertEquals("Lelut", haettuMenoera.get().getAliluokka().getNimi());
 
     }
 
@@ -84,7 +98,7 @@ class MenoeraRepoTests {
     public void menoeraPoistoTesti() {
 
         //Luodaan uusi menoerä ja tallennetaan se tietokantaan.
-        Menoera menoera = new Menoera(10.00, LocalDate.parse("2024-03-03"), "Uusi nuija nukutukseen", maksaja, paaluokka);
+        Menoera menoera = new Menoera(10.00, LocalDate.parse("2024-03-03"), "Uusi nuija nukutukseen", maksaja, paaluokka, aliluokka);
         menoeraRepository.save(menoera);
 
         //Poistetaan menoerä tietokannasta.
@@ -97,5 +111,7 @@ class MenoeraRepoTests {
         assertFalse(haettuMenoera.isPresent());
 
     }
+
+    //TÄÄLTÄ PUUTTUU UPDATE TESTI??
 
 }

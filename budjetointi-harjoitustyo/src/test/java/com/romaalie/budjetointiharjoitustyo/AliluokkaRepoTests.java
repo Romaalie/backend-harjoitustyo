@@ -1,5 +1,6 @@
 package com.romaalie.budjetointiharjoitustyo;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -133,5 +134,32 @@ class AliluokkaRepoTests {
         assertTrue(haettuAliluokka2.isPresent());
 
     }
+
+    @Test
+    public void findByPaaluokkaIdTesti() {
+        //Luodaan kaksi uutta aliluokkaa käyttäen valmista pääluokkaa.
+        Aliluokka aliluokka = new Aliluokka("Vaatteet", paaluokka);
+        Aliluokka aliluokka2 = new Aliluokka("Lelut", paaluokka);
+
+        //Tallennetaan aliluokat tietokantaan.
+        aliluokkaRepository.save(aliluokka);
+        aliluokkaRepository.save(aliluokka2);
+
+        //Haetaan aliluokat tietokannasta pääluokan id:llä. Näin varmistetaan, ettei käytetä välimuistin tietoja.
+        List<Aliluokka> haetutAliluokat = aliluokkaRepository.findByPaaluokkaId(paaluokka.getId());
+
+        //Testataan, että paaluokan id:llä löytyy lista kooltaan kaksi.
+        assertEquals(2, haetutAliluokat.size());
+
+        //Testataan, että haetuilla luokilla on oikeat nimet.
+        assertEquals("Vaatteet", haetutAliluokat.get(0).getNimi());
+        assertEquals("Lelut", haetutAliluokat.get(1).getNimi());
+
+        //Testataan, että kaikki nimet eivät mene läpi.
+        assertNotEquals("Lelut", haetutAliluokat.get(0).getNimi());
+        assertNotEquals("Vaatteet", haetutAliluokat.get(1).getNimi());
+
+    }
+;
 
 }

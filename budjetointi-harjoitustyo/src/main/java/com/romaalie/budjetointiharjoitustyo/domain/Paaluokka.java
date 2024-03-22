@@ -1,5 +1,6 @@
 package com.romaalie.budjetointiharjoitustyo.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -34,6 +35,8 @@ public class Paaluokka {
 
     public Paaluokka(@NotBlank String nimi) {
         this.nimi = nimi;
+        this.menoerat = new ArrayList<>();
+        this.aliluokat = new ArrayList<>();
     }
 
     public Long getId() {
@@ -66,6 +69,16 @@ public class Paaluokka {
 
     public void setAliluokat(List<Aliluokka> aliluokat) {
         this.aliluokat = aliluokat;
+    }
+
+    public void addAliluokka(Aliluokka aliluokka) {
+        aliluokat.add(aliluokka);
+        aliluokka.setPaaluokka(this);
+    }
+
+    public void removeAliluokka(Aliluokka aliluokka) {
+        aliluokat.remove(aliluokka);
+        aliluokka.setPaaluokka(null);
     }
 
     @Override

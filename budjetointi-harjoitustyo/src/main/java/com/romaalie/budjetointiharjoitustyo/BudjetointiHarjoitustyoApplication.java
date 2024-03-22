@@ -71,10 +71,23 @@ public class BudjetointiHarjoitustyoApplication {
             aliluokkaRepository.save(vuokra);
             aliluokkaRepository.save(vesi);
 
+            //Update main classes
+            ruoka.addAliluokka(arki);
+            ruoka.addAliluokka(herkut);
+            ruoka.addAliluokka(ravintola);
+
+            lapset.addAliluokka(vaatteet);
+            lapset.addAliluokka(lelut);
+            lapset.addAliluokka(harrastukset);
+
+            pakolliset.addAliluokka(sahko);
+            pakolliset.addAliluokka(vuokra);
+            pakolliset.addAliluokka(vesi);
+
             // Create some Menoera demos
-            Menoera menoera1 = new Menoera(25.50, LocalDate.now(), "Ruokaostokset", tanja, ruoka);
-            Menoera menoera2 = new Menoera(15.75, LocalDate.now().minusDays(2), "Lounas ulkona", tanja, ruoka);
-            Menoera menoera3 = new Menoera(45.30, LocalDate.now().minusDays(1), "Uudet lelut lapsille", tero, lapset);
+            Menoera menoera1 = new Menoera(25.50, LocalDate.now(), "Ruokaostokset", tanja, ruoka, arki);
+            Menoera menoera2 = new Menoera(15.75, LocalDate.now().minusDays(2), "Lounas ulkona", tanja, ruoka, ravintola);
+            Menoera menoera3 = new Menoera(45.30, LocalDate.now().minusDays(1), "Uudet lelut lapsille", tero, lapset, lelut);
 
             // Save Menoera demos to the database
             menoeraRepository.save(menoera1);

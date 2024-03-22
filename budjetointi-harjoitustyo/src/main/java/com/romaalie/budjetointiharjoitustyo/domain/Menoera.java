@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -41,16 +42,26 @@ public class Menoera {
     @JsonIgnore
     private Paaluokka paaluokka;
 
+    @Transient
+    private Aliluokka aliluokka;
+
+    private String aliluokkaNimi;
+
+    private Long aliluokkaId;
+
     public Menoera() {
     }
 
-    public Menoera(@NotNull @Positive double hinta, @NotNull LocalDate aikaLeima, String lisatietoja, @NotNull Kayttaja maksaja,
-            @NotNull Paaluokka paaluokka) {
+    public Menoera(@NotNull @Positive double hinta, @NotNull LocalDate aikaLeima, String lisatietoja,
+            @NotNull Kayttaja maksaja, @NotNull Paaluokka paaluokka, @NotNull Aliluokka aliluokka) {
         this.hinta = hinta;
         this.aikaLeima = aikaLeima;
         this.lisatietoja = lisatietoja;
         this.maksaja = maksaja;
         this.paaluokka = paaluokka;
+        this.aliluokka = aliluokka;
+        this.aliluokkaNimi = aliluokka.getNimi();
+        this.aliluokkaId = aliluokka.getId();
     }
 
     public Long getId() {
@@ -101,10 +112,36 @@ public class Menoera {
         this.paaluokka = paaluokka;
     }
 
+    public Aliluokka getAliluokka() {
+        return aliluokka;
+    }
+
+    public void setAliluokka(Aliluokka aliluokka) {
+        this.aliluokka = aliluokka;
+        setAliluokkaNimi(aliluokka);
+        setAliluokkaId(aliluokka);
+    }
+
+    public String getAliluokkaNimi() {
+        return aliluokkaNimi;
+    }
+
+    public void setAliluokkaNimi(Aliluokka aliluokka) {
+        this.aliluokkaNimi = aliluokka.getNimi();
+    }
+
+    public Long getAliluokkaId() {
+        return aliluokkaId;
+    }
+
+    public void setAliluokkaId(Aliluokka aliluokka) {
+        this.aliluokkaId = aliluokka.getId();
+    }
+
     @Override
     public String toString() {
         return "Menoera [id=" + id + ", hinta=" + hinta + ", aikaLeima=" + aikaLeima + ", lisatietoja=" + lisatietoja
-                + ", maksaja=" + maksaja.getNimi() + ", paaluokka=" + paaluokka.getNimi() + "]";
+                + ", maksaja=" + maksaja + ", paaluokka=" + paaluokka + ", aliluokka=" + aliluokka + "]";
     }
 
 }
