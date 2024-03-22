@@ -43,6 +43,7 @@ public class Menoera {
     private Paaluokka paaluokka;
 
     @Transient
+    @NotNull
     private Aliluokka aliluokka;
 
     private String aliluokkaNimi;

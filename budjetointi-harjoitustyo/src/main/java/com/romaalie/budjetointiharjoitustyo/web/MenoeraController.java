@@ -68,7 +68,10 @@ public class MenoeraController {
 
     // /lisays sivun lomakkeen lähetys.
     @RequestMapping(value = "/lisaa")
-    public String lisaaMenoera(@Valid Menoera menoera) {
+    public String lisaaMenoera(@Valid Menoera menoera, BindingResult result) {
+        if (result.hasErrors()) {
+            return "lisays"; // Return to the form with validation errors
+        }
         menoeraRepository.save(menoera);
         return "redirect:/main";
     }
@@ -81,7 +84,7 @@ public class MenoeraController {
     }
 
     //Sivu, jolla voi muokata yksittäistä menoerää.
-        @RequestMapping("/muokkaus/{id}")
+    @RequestMapping("/muokkaus/{id}")
     public String muokkausSivu(@PathVariable("id") Long id, Model model) {
         model.addAttribute("menoerat", menoeraRepository.findAll());
         return "muokkaus";
