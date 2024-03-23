@@ -142,7 +142,8 @@ public class Menoera {
     @Override
     public String toString() {
         return "Menoera [id=" + id + ", hinta=" + hinta + ", aikaLeima=" + aikaLeima + ", lisatietoja=" + lisatietoja
-                + ", maksaja=" + maksaja + ", paaluokka=" + paaluokka + ", aliluokka=" + aliluokka + "]";
+                + ", maksaja=" + maksaja + ", paaluokka=" + paaluokka + ", aliluokka=" + aliluokka + ", aliluokkaNimi="
+                + aliluokkaNimi + ", aliluokkaId=" + aliluokkaId + "]";
     }
 
 }

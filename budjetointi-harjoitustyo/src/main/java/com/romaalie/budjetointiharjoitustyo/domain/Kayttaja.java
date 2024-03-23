@@ -83,7 +83,6 @@ public class Kayttaja {
     @Override
     public String toString() {
         return "Kayttaja [id=" + id + ", nimi=" + nimi + ", salasanaHash=" + salasanaHash + ", kayttajaRooli="
-                + kayttajaRooli + ", menoerat=" + menoerat + "]";
+                + kayttajaRooli + "]";
     }
-
 }

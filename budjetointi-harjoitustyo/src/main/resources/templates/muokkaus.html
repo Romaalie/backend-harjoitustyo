@@ -8,5 +8,93 @@
 </head>
 
 <body>
-    moi
+    <div class="container">
+        <h1>Muokka menoerää</h1>
+
+        <div class="col-md-4">
+            <form th:object="${menoera}" th:action="@{/lisaa}" action="#" method="post">
+                <input type="hidden" id="id" th:field="*{id}" />
+
+                <label for="aikaLeima">Päivämäärä</label>
+                <input type="date" id="aikaLeima" th:field="*{aikaLeima}" class="form-control" required />
+
+                <label for="paaluokka">Pääluokka</label>
+                <select class="form-control" id="paaluokka" th:field="*{paaluokka}" name="paaluokka"
+                    onchange="populateAliluokka()" required>
+                    <option value="">Valitse pääluokka...</option>
+                    <option th:each="paaluokka : ${paaluokat}" th:value="${paaluokka.id}" th:text="${paaluokka.nimi}">
+                    </option>
+                </select>
+
+                <div class="form-group" id="aliluokkaGroup">
+                    <label for="aliluokka">Aliluokka</label>
+                    <select class="form-control" id="aliluokka" name="aliluokka" onchange="updateSelectedAliluokka()"
+                        required>
+                        <div th:if="${menoera.isPresent()}">
+                            <option th:value="${menoera.get().aliluokkaId}" th:text="${menoera.get().aliluokkaNimi}"
+                                selected="selected"></option>
+                            <option value="">Valitse aliluokka</option>
+                        </div>
+                        <div th:unless="${menoera.isPresent()}">
+                            <option value="" selected="selected">Aliluokka is not present</option>
+                        </div>
+                    </select>
+                    <input type="hidden" id="selectedAliluokka" name="selectedAliluokka"
+                        th:value="${menoera.isPresent() ? menoera.get().aliluokkaNimi : ''}" />
+                </div>
+
+                <label for="hinta">Hinta</label>
+                <input type="number" id="hinta" th:field="*{hinta}" class="form-control" min="0.01" required />
+                <div th:if="${#fields.hasErrors('hinta')}" th:errors="*{hinta}"></div>
+
+                <label for="maksaja">Maksaja</label>
+                <select id="maksaja" th:field="*{maksaja}" class="form-control" required>
+                    <option value="">Valitse maksaja...</option>
+                    <option th:each="kayttaja : ${kayttajat}" th:value="${kayttaja.id}" th:text="${kayttaja.nimi}">
+                    </option>
+                </select>
+                <button type="submit" class="btn btn-primary">Tallenna</button>
+                <a th:href="@{/main}" class="btn btn-secondary">Palaa pääsivulle</a>
+            </form>
+        </div>
+    </div>
+
+    <!--Scriptit aliluokka dropdown menujen päivitykseen -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        //Tämä päivittää Aliluokka pudotusvalikon valitun Pääluokan mukaan. Päivittyy muutettaessa pääluokkaa.
+        function populateAliluokka() {
+            var paaluokkaId = $("#paaluokka").val();
+            if (paaluokkaId) {
+                $.ajax({
+                    url: "/getAliluokat/" + paaluokkaId,
+                    type: "GET",
+                    success: function (data) {
+                        var aliluokkaDropdown = $("#aliluokka");
+                        aliluokkaDropdown.empty();
+                        aliluokkaDropdown.append('<option value="">Valitse aliluokka</option>');
+                        $.each(data, function (index, aliluokka) {
+                            aliluokkaDropdown.append('<option value="' + aliluokka.id + '">' + aliluokka.nimi + '</option>');
+                        });
+                        $("#aliluokkaGroup").show();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                    }
+                });
+            } else {
+                $("#aliluokka").empty();
+                $("#aliluokkaGroup").hide();
+            }
+        }
+
+        //Tämä päivittää piilotetun aliluokka kentän vastaamaan aliluokka pudotusvalikosta valittua arvoa.
+        function updateSelectedAliluokka() {
+            var aliluokkaSelectedName = $("#aliluokka option:selected").text();
+            $("#selectedAliluokka").val(aliluokkaSelectedName);
+            // Loggaukset virheenetsintää varten
+            console.log("Selected Aliluokka Name:", aliluokkaSelectedName);
+            console.log("Value submitted for 'selectedAliluokka' field:", $("#selectedAliluokka").val());
+        }
+    </script>
 </body>
