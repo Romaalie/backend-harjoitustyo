@@ -1,7 +1,9 @@
 package com.romaalie.budjetointiharjoitustyo.web;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,8 @@ import jakarta.validation.Valid;
 
 @Controller
 public class MenoeraController {
+
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(MenoeraController.class);
 
     @Autowired
     private MenoeraRepository menoeraRepository;
@@ -86,16 +90,26 @@ public class MenoeraController {
     //Sivu, jolla voi muokata yksittäistä menoerää.
     @RequestMapping("/muokkaus/{id}")
     public String muokkausSivu(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("menoera", menoeraRepository.findById(id));
-        model.addAttribute("paaluokat", paaluokkaRepository.findAll());
-        model.addAttribute("aliluokat", aliluokkaRepository.findAll());
-        model.addAttribute("kayttajat", kayttajaRepository.findAll());
-        return "muokkaus";
+        Optional<Menoera> menoeraOptional = menoeraRepository.findById(id);
+        if (menoeraOptional.isPresent()) {
+            Menoera menoera = menoeraOptional.get();
+            logger.info("Received Menoera for editing: {}", menoera);
+            model.addAttribute("menoera", menoeraRepository.findById(id));
+            model.addAttribute("paaluokat", paaluokkaRepository.findAll());
+            model.addAttribute("aliluokat", aliluokkaRepository.findAll());
+            model.addAttribute("kayttajat", kayttajaRepository.findAll());
+            return "muokkaus";
+        } else {
+            logger.warn("Menoera with ID {} not found for editing.", id);
+            // Handle case where Menoera with given ID is not found
+            return "redirect:/main";
+        }
     }
 
     //TÄMÄ ON VANHA JA VAIN TESTAUSTA VARTEN
     @RequestMapping("/lisays2")
-    public String lisaysSivu2(Model model) {
+    public String lisaysSivu2(Model model
+    ) {
         model.addAttribute("menoera", new Menoera());
         model.addAttribute("paaluokat", paaluokkaRepository.findAll());
         model.addAttribute("aliluokat", aliluokkaRepository.findAll());
@@ -105,7 +119,8 @@ public class MenoeraController {
 
     //TÄMÄ ON VANHA JA VAIN TESTAUSTA VARTEN
     @RequestMapping(value = "/lisaa2")
-    public String lisaaMenoera2(@Valid Menoera menoera, BindingResult tulos) {
+    public String lisaaMenoera2(@Valid Menoera menoera, BindingResult tulos
+    ) {
         if (tulos.hasErrors()) {
             return "lisays2";
         }

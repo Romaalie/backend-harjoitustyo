@@ -13,10 +13,12 @@
 
         <div class="col-md-4">
             <form th:object="${menoera}" th:action="@{/lisaa}" action="#" method="post">
-                <input type="hidden" id="id" th:field="*{id}" />
+                <input type="hidden" id="id" th:field="*{id}" value="${menoera.id}" />
 
                 <label for="aikaLeima">Päivämäärä</label>
-                <input type="date" id="aikaLeima" th:field="*{aikaLeima}" class="form-control" required />
+                <span>(aiempi päivämäärä: <span th:text="${menoera.get().aikaLeima}"></span>)</span>
+                <input class="form-control" type="date" id="aikaLeima" th:field="*{aikaLeima}"
+                    th:max="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required />
 
                 <label for="paaluokka">Pääluokka</label>
                 <select class="form-control" id="paaluokka" th:field="*{paaluokka}" name="paaluokka"
@@ -30,21 +32,17 @@
                     <label for="aliluokka">Aliluokka</label>
                     <select class="form-control" id="aliluokka" name="aliluokka" onchange="updateSelectedAliluokka()"
                         required>
-                        <div th:if="${menoera.isPresent()}">
-                            <option th:value="${menoera.get().aliluokkaId}" th:text="${menoera.get().aliluokkaNimi}"
-                                selected="selected"></option>
-                            <option value="">Valitse aliluokka</option>
-                        </div>
-                        <div th:unless="${menoera.isPresent()}">
-                            <option value="" selected="selected">Aliluokka is not present</option>
-                        </div>
+                        <option value="">Valitse aliluokka</option>
+                        <option th:each="aliluokka : ${menoera.get().paaluokka.aliluokat}" th:value="${aliluokka.id}"
+                            th:text="${aliluokka.nimi}" th:selected="${aliluokka.id == menoera.get().aliluokka?.id}">
+                        </option>
                     </select>
                     <input type="hidden" id="selectedAliluokka" name="selectedAliluokka"
-                        th:value="${menoera.isPresent() ? menoera.get().aliluokkaNimi : ''}" />
+                        th:value="${menoera.get().aliluokka}" />
                 </div>
 
                 <label for="hinta">Hinta</label>
-                <input type="number" id="hinta" th:field="*{hinta}" class="form-control" min="0.01" required />
+                <input type="number" id="hinta" th:field="*{hinta}" class="form-control" required />
                 <div th:if="${#fields.hasErrors('hinta')}" th:errors="*{hinta}"></div>
 
                 <label for="maksaja">Maksaja</label>
