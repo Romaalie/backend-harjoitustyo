@@ -26,7 +26,8 @@ public class Paaluokka {
     @Valid
     private List<Menoera> menoerat;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paaluokka")
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy= "paaluokka")
     @Valid
     private List<Aliluokka> aliluokat;
 
@@ -35,8 +36,12 @@ public class Paaluokka {
 
     public Paaluokka(@NotBlank String nimi) {
         this.nimi = nimi;
-        this.menoerat = new ArrayList<>();
-        this.aliluokat = new ArrayList<>();
+    }
+
+    public Paaluokka(@NotBlank String nimi, @Valid List<Menoera> menoerat, @Valid List<Aliluokka> aliluokat) {
+        this.nimi = nimi;
+        this.menoerat = menoerat;
+        this.aliluokat = aliluokat;
     }
 
     public Long getId() {
@@ -72,13 +77,11 @@ public class Paaluokka {
     }
 
     public void addAliluokka(Aliluokka aliluokka) {
+        if (aliluokat == null) {
+            aliluokat = new ArrayList<>();
+        }
         aliluokat.add(aliluokka);
         aliluokka.setPaaluokka(this);
-    }
-
-    public void removeAliluokka(Aliluokka aliluokka) {
-        aliluokat.remove(aliluokka);
-        aliluokka.setPaaluokka(null);
     }
 
     @Override

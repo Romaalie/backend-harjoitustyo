@@ -72,8 +72,11 @@ public class MenoeraController {
 
     // /lisays sivun lomakkeen lähetys virheen käsittelyllä.
     @RequestMapping(value = "/lisaa")
-    public String lisaaMenoera(@Valid Menoera menoera, BindingResult result) {
+    public String lisaaMenoera(@Valid Menoera menoera, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("paaluokat", paaluokkaRepository.findAll());
+            model.addAttribute("aliluokat", aliluokkaRepository.findAll());
+            model.addAttribute("kayttajat", kayttajaRepository.findAll());
             return "lisays";
         }
         menoeraRepository.save(menoera);
