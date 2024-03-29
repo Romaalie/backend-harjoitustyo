@@ -26,17 +26,18 @@
                     </option>
                 </select>
 
-                <div class="form-group" id="aliluokkaGroup" style="display: none;">
+                <div class="form-group" id="aliluokkaGroup">
                     <label for="aliluokka">Aliluokka</label>
-                    <select class="form-control" id="aliluokka" name="aliluokka" onchange="updateSelectedAliluokka()" required>
-                        <option value="">Valitse aliluokka</option>
+                    <select class="form-control" id="aliluokka" name="aliluokka" onchange="updateSelectedAliluokka()"
+                        required>
+                        <option value="">Valitse aliluokka...</option>
                     </select>
-                    <input type="hidden" id="selectedAliluokka" name="selectedAliluokka"
-                        th:value="${menoera.aliluokkaNimi}" />
+                    <input type="hidden" id="selectedAliluokka" th:field="*{aliluokka.id}" />
                 </div>
 
                 <label for="hinta">Hinta</label>
-                <input type="number" id="hinta" th:field="*{hinta}" class="form-control" min="0.01" required />
+                <input type="number" id="hinta" th:field="*{hinta}" class="form-control" min="0.01" step="any"
+                    required />
                 <div th:if="${#fields.hasErrors('hinta')}" th:errors="*{hinta}"></div>
 
                 <label for="maksaja">Maksaja</label>
@@ -57,36 +58,43 @@
         //Tämä päivittää Aliluokka pudotusvalikon valitun Pääluokan mukaan. Päivittyy muutettaessa pääluokkaa.
         function populateAliluokka() {
             var paaluokkaId = $("#paaluokka").val();
-            if (paaluokkaId) {
-                $.ajax({
-                    url: "/getAliluokat/" + paaluokkaId,
-                    type: "GET",
-                    success: function (data) {
-                        var aliluokkaDropdown = $("#aliluokka");
-                        aliluokkaDropdown.empty();
-                        aliluokkaDropdown.append('<option value="">Valitse aliluokka</option>');
-                        $.each(data, function (index, aliluokka) {
-                            aliluokkaDropdown.append('<option value="' + aliluokka.id + '">' + aliluokka.nimi + '</option>');
-                        });
-                        $("#aliluokkaGroup").show();
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus, errorThrown);
-                    }
-                });
-            } else {
-                $("#aliluokka").empty();
-                $("#aliluokkaGroup").hide();
+            var aliluokkaDropdown = $("#aliluokka");
+
+            if (!paaluokkaId) {
+                aliluokkaDropdown.empty();
+                aliluokkaDropdown.append('<option value="">Valitse ensin pääluokka</option>');
+                $("#aliluokkaGroup").show();
+                return; // Exit the function if no Paaluokka is selected
             }
+
+            $.ajax({
+                url: "/getAliluokat/" + paaluokkaId,
+                type: "GET",
+                success: function (data) {
+                    aliluokkaDropdown.empty();
+                    aliluokkaDropdown.append('<option value="">Valitse aliluokka</option>');
+                    $.each(data, function (index, aliluokka) {
+                        aliluokkaDropdown.append('<option value="' + aliluokka.id + '">' + aliluokka.nimi + '</option>');
+                    });
+                    $("#aliluokkaGroup").show();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
+            });
         }
+
+        // Trigger populateAliluokka on page load and when Paaluokka changes
+        $(document).ready(function () {
+            populateAliluokka(); // Populate Aliluokka dropdown on page load
+            $("#paaluokka").change(populateAliluokka); // Update Aliluokka dropdown on Paaluokka change
+        });
 
         //Tämä päivittää piilotetun aliluokka kentän vastaamaan aliluokka pudotusvalikosta valittua arvoa.
         function updateSelectedAliluokka() {
-            var aliluokkaSelectedName = $("#aliluokka option:selected").text();
-            $("#selectedAliluokka").val(aliluokkaSelectedName);
-            // Loggaukset virheenetsintää varten
-            console.log("Selected Aliluokka Name:", aliluokkaSelectedName);
-            console.log("Value submitted for 'selectedAliluokka' field:", $("#selectedAliluokka").val());
+            var aliluokkaSelectedId = $("#aliluokka").val();
+            $("#selectedAliluokka").val(aliluokkaSelectedId);
+            console.log("Selected Aliluokka ID:", aliluokkaSelectedId);
         }
 
 
