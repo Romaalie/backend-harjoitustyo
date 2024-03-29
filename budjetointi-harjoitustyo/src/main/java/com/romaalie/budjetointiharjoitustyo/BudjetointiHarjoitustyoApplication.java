@@ -28,12 +28,14 @@ public class BudjetointiHarjoitustyoApplication {
         return (args) -> {
 
             // Create test users
-            Kayttaja tanja = new Kayttaja("Tanja", "$2y$10$R3n540TfIBqXtgjZC8ksKeWSyZl0YhzPXPLTctnD1.B8NriqBhO.2", "kayttaja");
-            Kayttaja tero = new Kayttaja("Tero", "$2y$10$GDTmEuglS.PUfitb5Q5IzeaQOf.7zcqVRQpqzmvW21J9DQnbwZlQ2", "kayttaja");
+            Kayttaja tanja = new Kayttaja("Tanja", "$2y$10$R3n540TfIBqXtgjZC8ksKeWSyZl0YhzPXPLTctnD1.B8NriqBhO.2", "rooli_kayttaja");
+            Kayttaja tero = new Kayttaja("Tero", "$2y$10$GDTmEuglS.PUfitb5Q5IzeaQOf.7zcqVRQpqzmvW21J9DQnbwZlQ2", "rooli_kayttaja");
+            Kayttaja admin = new Kayttaja("admin", "$2y$10$WCAdMRYFgYckxxaV0tYdS.CNYbPLVk2U/4PJw80oOs5N0N6YAjkHe", "rooli_admin");
 
             // Save users to the database
             kayttajaRepository.save(tanja);
             kayttajaRepository.save(tero);
+            kayttajaRepository.save(admin);
 
             // Create main classes
             Paaluokka ruoka = new Paaluokka("Ruoka");

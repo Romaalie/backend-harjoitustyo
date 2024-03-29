@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -53,6 +54,7 @@ public class MenoeraController {
     }
 
     //Sivu, jolla voi lisätä uuden menoerän lomakkeen avulla.
+    @PreAuthorize("hasAuthority('rooli_admin')")
     @RequestMapping("/lisays")
     public String lisaysSivu(Model model) {
         model.addAttribute("menoera", new Menoera());
@@ -71,6 +73,7 @@ public class MenoeraController {
     }
 
     // /lisays sivun lomakkeen lähetys virheen käsittelyllä.
+    @PreAuthorize("hasAuthority('rooli_admin')")
     @RequestMapping(value = "/lisaa")
     public String lisaaMenoera(@Valid Menoera menoera, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -84,6 +87,7 @@ public class MenoeraController {
     }
 
     // /main sivun poista -napin toiminnallisuus.
+    @PreAuthorize("hasAuthority('rooli_admin')")
     @RequestMapping("/poista/{id}")
     public String poistaMenoera(@PathVariable("id") Long id) {
         menoeraRepository.deleteById(id);
@@ -91,6 +95,7 @@ public class MenoeraController {
     }
 
     //Sivu, jolla voi muokata yksittäistä menoerää.
+    @PreAuthorize("hasAuthority('rooli_admin')")
     @RequestMapping("/muokkaus/{id}")
     public String muokkausSivu(@PathVariable("id") Long id, Model model) {
         Optional<Menoera> menoeraOptional = menoeraRepository.findById(id);
@@ -108,6 +113,11 @@ public class MenoeraController {
             return "redirect:/main";
         }
     }
+
+
+    /* 
+
+
 
     //TÄMÄ ON VANHA JA VAIN TESTAUSTA VARTEN
     @RequestMapping("/lisays2")
@@ -131,4 +141,5 @@ public class MenoeraController {
         return "redirect:/main";
     }
 
+     */
 }

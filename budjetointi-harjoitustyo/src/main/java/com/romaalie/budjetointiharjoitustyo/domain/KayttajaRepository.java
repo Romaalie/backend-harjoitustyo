@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface KayttajaRepository extends CrudRepository<Kayttaja, Long> {
 
+    Kayttaja findByNimi(String nimi);
+
 }
