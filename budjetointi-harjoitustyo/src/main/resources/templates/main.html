@@ -59,17 +59,23 @@
                 <td th:text="${menoera.aliluokka.nimi}"></td>
                 <td th:text="${menoera.hinta}"></td>
                 <td th:text="${menoera.maksaja.nimi}"></td>
-                <td class="col col-sm-1" sec:authorize="hasRole('ROLE_admin')"><a class="btn btn-secondary"
+                <td class="col col-sm-1" th:if="${#authorization.expression('hasRole(''ROLE_admin'')') or (menoera.maksaja.id == loggedInUserId)}"><a class="btn btn-secondary"
                         th:href="@{/muokkaus/{id}(id=${menoera.id})}">Muokkaa</a></td>
-                <td class="col col-sm-1" sec:authorize="hasRole('ROLE_admin')"><a class="btn btn-danger"
+                <td class="col col-sm-1" th:if="${#authorization.expression('hasRole(''ROLE_admin'')') or (menoera.maksaja.id == loggedInUserId)}"><a class="btn btn-danger"
                         th:href="@{/poista/{id}(id=${menoera.id})}">Poista</a></td>
             </tr>
         </tbody>
     </table>
     <a href="/lisays" class="btn btn-success">Lisää</a>
+
+
+
     <!-- TÄMÄ ON VANHA JA VAIN TESTAUSTA VARTEN
     <a href="/lisays2" class="btn btn-success">Lisää2</a>
     -->
+
+
+
 
     <!--Sortaus metodi jolla voi järjestää sarakkeen nousevaan tai laskevaan järjestykseen, ChatGPT=>Ei arvosteluun/vain omaan käyttöön 
 

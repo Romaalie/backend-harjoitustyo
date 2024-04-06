@@ -3,6 +3,7 @@
 - Error handling kun käyttäjä navigoi selaimella kiellettyyn paikkaan.
 
 - Käyttäjän pääsy omiin menoeriin (=muokkaus, poisto)?
+    - Nappien näkyvyys /main toimii. Vielä metodikohtainen suodatus controlleriin.
 
 - Selvitä miten postman toimii autentikointien kanssa.
 
