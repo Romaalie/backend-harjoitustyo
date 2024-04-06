@@ -25,9 +25,11 @@
 <body>
     <h1>Menoerät</h1>
     <div>
-        <span sec:authentication="name">Kirjautuneena käyttäjänä: </span>
+        <span>Kirjautunut käyttäjänä: <span sec:authentication="name"> </span></span>
         <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Kirjaudu ulos" class="btn btn-sm btn-danger" />
+            <div style="padding: 5px">
+                <input type="submit" value="Kirjaudu ulos" class="btn btn-sm btn-danger" />
+            </div>
         </form>
     </div>
 
@@ -57,9 +59,9 @@
                 <td th:text="${menoera.aliluokka.nimi}"></td>
                 <td th:text="${menoera.hinta}"></td>
                 <td th:text="${menoera.maksaja.nimi}"></td>
-                <td class="col col-sm-1"><a class="btn btn-secondary"
+                <td class="col col-sm-1" sec:authorize="hasRole('ROLE_admin')"><a class="btn btn-secondary"
                         th:href="@{/muokkaus/{id}(id=${menoera.id})}">Muokkaa</a></td>
-                <td class="col col-sm-1"><a class="btn btn-danger"
+                <td class="col col-sm-1" sec:authorize="hasRole('ROLE_admin')"><a class="btn btn-danger"
                         th:href="@{/poista/{id}(id=${menoera.id})}">Poista</a></td>
             </tr>
         </tbody>

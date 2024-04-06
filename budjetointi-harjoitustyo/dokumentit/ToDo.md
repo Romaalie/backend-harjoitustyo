@@ -1,9 +1,5 @@
 # To do lista
 
-- Käyttäjänimen näyttäminen /main endpointissa
-
-- Kirjaudu ulos napin siistimpi asettelu?
-
 - Error handling kun käyttäjä navigoi selaimella kiellettyyn paikkaan.
 
 - Käyttäjän pääsy omiin menoeriin (=muokkaus, poisto)?

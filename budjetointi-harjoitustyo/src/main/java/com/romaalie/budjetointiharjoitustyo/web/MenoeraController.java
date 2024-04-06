@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,19 +49,38 @@ public class MenoeraController {
 
     //Pääsivu, jolla listataan kaikki menoerät.
     @RequestMapping("/main")
-    public String paasivu(Model model) {
+    public String paasivu(Model model, Authentication authentication) {
         model.addAttribute("menoerat", menoeraRepository.findAll());
-        return "main";
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Get the logged-in user's data
+            String loggedInUserName = authentication.getName();
+            model.addAttribute("loggedInUserName", loggedInUserName);
+            Object loggedInUser = authentication.getPrincipal();
+            model.addAttribute("loggedInUser", loggedInUser);
+            Long loggedInUserId = kayttajaRepository.findByNimi(loggedInUserName).getId();
+            model.addAttribute("loggedInUserId", loggedInUserId);        
     }
+    return "main";
+}
 
     //Sivu, jolla voi lisätä uuden menoerän lomakkeen avulla.
-    @PreAuthorize("hasAuthority('rooli_admin')")
+    @PreAuthorize("hasAuthority('ROLE_admin') || hasAuthority('ROLE_kayttaja')")
     @RequestMapping("/lisays")
-    public String lisaysSivu(Model model) {
+    public String lisaysSivu(Model model, Authentication authentication) {
         model.addAttribute("menoera", new Menoera());
         model.addAttribute("paaluokat", paaluokkaRepository.findAll());
         model.addAttribute("aliluokat", aliluokkaRepository.findAll());
         model.addAttribute("kayttajat", kayttajaRepository.findAll());
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Get the logged-in user's data
+            String loggedInUserName = authentication.getName();
+            model.addAttribute("loggedInUserName", loggedInUserName);
+            Object loggedInUser = authentication.getPrincipal();
+            model.addAttribute("loggedInUser", loggedInUser);
+            Long loggedInUserId = kayttajaRepository.findByNimi(loggedInUserName).getId();
+            model.addAttribute("loggedInUserId", loggedInUserId);
+        }
         return "lisays";
     }
 
@@ -72,22 +92,26 @@ public class MenoeraController {
         return aliluokat;
     }
 
-    // /lisays sivun lomakkeen lähetys virheen käsittelyllä.
-    @PreAuthorize("hasAuthority('rooli_admin')")
+    // /lisays sivun lomakkeen lähetys (virheen käsittelyllä).
+    @PreAuthorize("hasAuthority('ROLE_kayttaja') || hasAuthority('ROLE_admin')")
     @RequestMapping(value = "/lisaa")
     public String lisaaMenoera(@Valid Menoera menoera, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("paaluokat", paaluokkaRepository.findAll());
             model.addAttribute("aliluokat", aliluokkaRepository.findAll());
             model.addAttribute("kayttajat", kayttajaRepository.findAll());
+
+            //model.addAttribute("errors", result.getAllErrors());
+
             return "lisays";
         }
         menoeraRepository.save(menoera);
+        System.out.println("Menoera saved: " + menoera.toString());
         return "redirect:/main";
     }
 
     // /main sivun poista -napin toiminnallisuus.
-    @PreAuthorize("hasAuthority('rooli_admin')")
+    @PreAuthorize("hasAuthority('ROLE_admin')")
     @RequestMapping("/poista/{id}")
     public String poistaMenoera(@PathVariable("id") Long id) {
         menoeraRepository.deleteById(id);
@@ -95,7 +119,7 @@ public class MenoeraController {
     }
 
     //Sivu, jolla voi muokata yksittäistä menoerää.
-    @PreAuthorize("hasAuthority('rooli_admin')")
+    @PreAuthorize("hasAuthority('ROLE_admin')")
     @RequestMapping("/muokkaus/{id}")
     public String muokkausSivu(@PathVariable("id") Long id, Model model) {
         Optional<Menoera> menoeraOptional = menoeraRepository.findById(id);

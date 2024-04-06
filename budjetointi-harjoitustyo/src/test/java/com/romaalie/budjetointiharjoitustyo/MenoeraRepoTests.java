@@ -117,7 +117,8 @@ class MenoeraRepoTests {
         assertEquals("testikayttaja2", haettuMenoera.get().getMaksaja().getNimi());
         assertNotEquals("testikayttaja", haettuMenoera.get().getMaksaja().getNimi());
     }
-
+/* 
+// Vanhentunut testi, koska tehty muutos tietokantarakenteeseen.
     //Testaa aliluokan muuttamista menoerässä ja tietojen päivittymistä kaikissa siihen liittyvissä kentissä.
     @Test
     public void menoeraAliluokkaMuutosTesti() {
@@ -137,7 +138,7 @@ class MenoeraRepoTests {
         //assertEquals("Vaatteet", haettuMenoera.get().aliluokka.getNimi());
         // assertNotEquals("Lelut", haettuMenoera.get().);
     }
-
+*/
     //Testaa tiedon poistamista tietokannasta.
     @Test
     public void menoeraPoistoTesti() {
