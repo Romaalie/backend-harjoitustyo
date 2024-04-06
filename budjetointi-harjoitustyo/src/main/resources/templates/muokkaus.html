@@ -47,11 +47,16 @@
                 <div th:if="${#fields.hasErrors('hinta')}" th:errors="*{hinta}"></div>
 
                 <label for="maksaja">Maksaja</label>
-                <select id="maksaja" th:field="*{maksaja}" class="form-control" required>
+                <select id="maksaja" name="maksaja" class="form-control"
+                    th:disabled="${#authorization.expression('hasRole(''ROLE_kayttaja'')')}">
                     <option value="">Valitse maksaja...</option>
-                    <option th:each="kayttaja : ${kayttajat}" th:value="${kayttaja.id}" th:text="${kayttaja.nimi}">
+                    <option th:each="kayttaja : ${kayttajat}" th:value="${kayttaja.id}" th:text="${kayttaja.nimi}"
+                        th:selected="${kayttaja.id eq loggedInUserId}">
                     </option>
                 </select>
+                <div th:unless="${#authorization.expression('hasRole(''ROLE_admin'')')}">
+                    <input type="hidden" id="hiddenLoggedInUserId" name="maksaja" th:value="${loggedInUserId}" />
+                </div>
                 <button type="submit" class="btn btn-primary">Tallenna</button>
                 <a th:href="@{/main}" class="btn btn-secondary">Palaa pääsivulle</a>
             </form>

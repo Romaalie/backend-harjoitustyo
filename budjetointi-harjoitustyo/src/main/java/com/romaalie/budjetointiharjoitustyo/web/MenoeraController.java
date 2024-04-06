@@ -141,34 +141,41 @@ public class MenoeraController {
     @PreAuthorize("hasRole('ROLE_admin') or (#menoeraMaksajaId == #loggedInUserId)")
     @RequestMapping("/muokkaus/{id}")
     public String muokkausSivu(@PathVariable("id") Long id, Model model, Authentication authentication) {
-        String loggedInUserName = authentication.getName();
-        Long loggedInUserId = kayttajaRepository.findByNimi(loggedInUserName).getId();
-
         Optional<Menoera> menoeraOptional = menoeraRepository.findById(id);
 
-        if (menoeraOptional.isPresent()) {
-            Menoera menoera = menoeraOptional.get();
-            Long menoeraMaksajaId = menoera.getMaksaja().getId();
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Get the logged-in user's data
+            String loggedInUserName = authentication.getName();
+            model.addAttribute("loggedInUserName", loggedInUserName);
+            Object loggedInUser = authentication.getPrincipal();
+            model.addAttribute("loggedInUser", loggedInUser);
+            Long loggedInUserId = kayttajaRepository.findByNimi(loggedInUserName).getId();
+            model.addAttribute("loggedInUserId", loggedInUserId);
 
-            // virheenetsintää
-            logger.info("Received Menoera for editing: {}", menoera);
-            if (menoeraMaksajaId.equals(loggedInUserId) || authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_admin"))) {
-                model.addAttribute("menoera", menoeraRepository.findById(id));
-                model.addAttribute("paaluokat", paaluokkaRepository.findAll());
-                model.addAttribute("aliluokat", aliluokkaRepository.findAll());
-                model.addAttribute("kayttajat", kayttajaRepository.findAll());
-                return "muokkaus";
-            } else {
-                logger.warn("Menoera with ID {} not found for editing.", id);
-                // Handle case where Menoera with given ID is not found
-                return "redirect:/main";
+            if (menoeraOptional.isPresent()) {
+                Menoera menoera = menoeraOptional.get();
+                Long menoeraMaksajaId = menoera.getMaksaja().getId();
+
+                // virheenetsintää
+                logger.info("Received Menoera for editing: {}", menoera);
+                if (menoeraMaksajaId.equals(loggedInUserId) || authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_admin"))) {
+                    model.addAttribute("menoera", menoeraRepository.findById(id));
+                    model.addAttribute("paaluokat", paaluokkaRepository.findAll());
+                    model.addAttribute("aliluokat", aliluokkaRepository.findAll());
+                    model.addAttribute("kayttajat", kayttajaRepository.findAll());
+                    return "muokkaus";
+                } else {
+                    logger.warn("Menoera with ID {} not found for editing.", id);
+                    // Handle case where Menoera with given ID is not found
+                    return "redirect:/main";
+                }
             }
         }
         return "redirect:/main";
     }
 
 
-        /* 
+    /* 
 
 
 
@@ -194,5 +201,5 @@ public class MenoeraController {
         return "redirect:/main";
     }
 
-         */
-    }
+     */
+}
