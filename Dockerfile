@@ -11,4 +11,4 @@ WORKDIR /usr/local/lib
 COPY --from=build /home/app/budjetointi-harjoitustyo/target/budjetointi-harjoitustyo-0.0.1-SNAPSHOT.jar budjetointi-harjoitustyo.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/usr/local/lib/pkg.jar"]
+ENTRYPOINT ["java", "-jar", "budjetointi-harjoitustyo.jar"]
