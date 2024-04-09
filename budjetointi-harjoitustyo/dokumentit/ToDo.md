@@ -2,9 +2,8 @@
 
 ## Olennaisia arvostelun kannalta
 
-- Sovelluksen asentaminen renderiin
-
 - Projektin siirto ulkoiseen tietokantaan
+    - Tietokannan luonti skripti
 
 - Soveltava toiminnallisuus?
 
