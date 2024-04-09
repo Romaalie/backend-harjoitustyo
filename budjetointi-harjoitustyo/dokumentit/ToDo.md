@@ -8,6 +8,8 @@
 
 - Soveltava toiminnallisuus?
 
+- Menoera entity join columneista -id osa pois?
+
 ## Onko olennaisia arvostelun kannalta
 
 - Error handling kun käyttäjä navigoi selaimella olemattomaan paikkaan?
