@@ -1,0 +1,63 @@
+DROP TABLE IF EXISTS aliluokka CASCADE;
+DROP TABLE IF EXISTS kayttaja CASCADE;
+DROP TABLE IF EXISTS paaluokka CASCADE;
+DROP TABLE IF EXISTS menoera CASCADE;
+
+CREATE TABLE IF NOT EXISTS Paaluokka (
+    id BIGSERIAL PRIMARY KEY,
+    nimi VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Aliluokka (
+    id BIGSERIAL PRIMARY KEY,
+    nimi VARCHAR(255) NOT NULL,
+    paaluokkaid BIGINT NOT NULL,
+    FOREIGN KEY (paaluokkaid) REFERENCES Paaluokka(id)
+);
+
+CREATE TABLE IF NOT EXISTS Kayttaja (
+    id BIGSERIAL PRIMARY KEY,
+    nimi VARCHAR(255) NOT NULL,
+    salasana_hash VARCHAR(255) NOT NULL,
+    kayttaja_rooli VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Menoera (
+    id BIGSERIAL PRIMARY KEY,
+    hinta FLOAT NOT NULL,
+    aika_leima DATE NOT NULL,
+    lisatietoja VARCHAR(255),
+    maksajaid BIGINT NOT NULL,
+    paaluokkaid BIGINT NOT NULL,
+    aliluokkaid BIGINT,
+    FOREIGN KEY (maksajaid) REFERENCES Kayttaja(id),
+    FOREIGN KEY (paaluokkaid) REFERENCES Paaluokka(id),
+    FOREIGN KEY (aliluokkaid) REFERENCES Aliluokka(id)
+);
+
+INSERT INTO Kayttaja (nimi, salasana_hash, kayttaja_rooli) VALUES
+('Tanja', '$2y$10$R3n540TfIBqXtgjZC8ksKeWSyZl0YhzPXPLTctnD1.B8NriqBhO.2', 'ROLE_kayttaja'),
+('Tero', '$2y$10$GDTmEuglS.PUfitb5Q5IzeaQOf.7zcqVRQpqzmvW21J9DQnbwZlQ2', 'ROLE_kayttaja'),
+('admin', '$2y$10$WCAdMRYFgYckxxaV0tYdS.CNYbPLVk2U/4PJw80oOs5N0N6YAjkHe', 'ROLE_admin');
+
+INSERT INTO Paaluokka (nimi) VALUES
+('Ruoka'),
+('Lapset'),
+('Pakolliset');
+
+INSERT INTO Aliluokka (nimi, paaluokkaid) VALUES
+('Arki', 1),
+('Herkut', 1),
+('Ravintola', 1),
+('Vaatteet', 2),
+('Lelut', 2),
+('Harrastukset', 2),
+('Sahko', 3),
+('Vuokra', 3),
+('Vesi', 3);
+
+INSERT INTO Menoera (hinta, aika_leima, lisatietoja, maksajaid, paaluokkaid, aliluokkaid) VALUES
+(25.50, CURRENT_DATE, 'Ruokaostokset', 1, 1, 1),
+(15.75, CURRENT_DATE - INTERVAL '2 days', 'Lounas ulkona', 1, 1, 3),
+(45.30, CURRENT_DATE - INTERVAL '1 day', 'Uudet lelut lapsille', 2, 2, 5);
+

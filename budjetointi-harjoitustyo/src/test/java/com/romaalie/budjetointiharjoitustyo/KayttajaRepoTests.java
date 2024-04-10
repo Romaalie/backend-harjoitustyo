@@ -8,22 +8,21 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
 
 import com.romaalie.budjetointiharjoitustyo.domain.Kayttaja;
 import com.romaalie.budjetointiharjoitustyo.domain.KayttajaRepository;
 
-/* ULKOISILLE TIETOKANNOILLE
- * import org.springframework.test.annotation.Rollback;
- *
- * import jakarta.transaction.Transactional;
- */
+import jakarta.transaction.Transactional;
+
 @DataJpaTest
-/* ULKOISILLE TIETOKANNOILLE
- * @Transactional
- * @Rollback(true)
- * @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
- */
+
+@Transactional
+@Rollback(true)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+
 class KayttajaRepoTests {
 
     @Autowired

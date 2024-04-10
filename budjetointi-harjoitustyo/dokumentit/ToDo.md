@@ -2,19 +2,13 @@
 
 ## Olennaisia arvostelun kannalta
 
-- Projektin siirto ulkoiseen tietokantaan
-    - Tietokannan luonti skripti
-
 - Soveltava toiminnallisuus?
 
-- Menoera entity join columneista -id osa pois?
+- Lisätiedot kenttää ei hyödynnetä missään. => poistoon?
 
 ## Onko olennaisia arvostelun kannalta
 
 - Error handling kun käyttäjä navigoi selaimella olemattomaan paikkaan?
-
-- Selvitä miten postman toimii autentikointien kanssa.
-    - RestMenoeraControllerin toimivuus postmanilla
 
 - Virheviesti väärälle käyttäjätunnukselle, nykyinen on ruma
     - Tarvitaanko tähän custom login?

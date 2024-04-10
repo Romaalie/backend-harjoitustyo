@@ -11,7 +11,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
-@Entity
+@Entity (name = "kayttaja")
 public class Kayttaja {
 
     @Id

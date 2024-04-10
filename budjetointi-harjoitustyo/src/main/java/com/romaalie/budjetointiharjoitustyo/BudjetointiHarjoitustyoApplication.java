@@ -1,20 +1,7 @@
 package com.romaalie.budjetointiharjoitustyo;
 
-import java.time.LocalDate;
-
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import com.romaalie.budjetointiharjoitustyo.domain.Aliluokka;
-import com.romaalie.budjetointiharjoitustyo.domain.AliluokkaRepository;
-import com.romaalie.budjetointiharjoitustyo.domain.Kayttaja;
-import com.romaalie.budjetointiharjoitustyo.domain.KayttajaRepository;
-import com.romaalie.budjetointiharjoitustyo.domain.Menoera;
-import com.romaalie.budjetointiharjoitustyo.domain.MenoeraRepository;
-import com.romaalie.budjetointiharjoitustyo.domain.Paaluokka;
-import com.romaalie.budjetointiharjoitustyo.domain.PaaluokkaRepository;
 
 @SpringBootApplication
 public class BudjetointiHarjoitustyoApplication {
@@ -22,7 +9,8 @@ public class BudjetointiHarjoitustyoApplication {
     public static void main(String[] args) {
         SpringApplication.run(BudjetointiHarjoitustyoApplication.class, args);
     }
-
+    /* 
+    //H2 demodatan luonti
     @Bean
     public CommandLineRunner demoData(MenoeraRepository menoeraRepository, KayttajaRepository kayttajaRepository, PaaluokkaRepository paaluokkaRepository, AliluokkaRepository aliluokkaRepository) {
         return (args) -> {
@@ -106,4 +94,5 @@ public class BudjetointiHarjoitustyoApplication {
 
         };
     }
+     */
 }

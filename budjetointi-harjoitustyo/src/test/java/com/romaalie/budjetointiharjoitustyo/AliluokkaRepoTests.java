@@ -11,24 +11,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
 
 import com.romaalie.budjetointiharjoitustyo.domain.Aliluokka;
 import com.romaalie.budjetointiharjoitustyo.domain.AliluokkaRepository;
 import com.romaalie.budjetointiharjoitustyo.domain.Paaluokka;
 import com.romaalie.budjetointiharjoitustyo.domain.PaaluokkaRepository;
 
-/* ULKOISILLE TIETOKANNOILLE
- * import org.springframework.test.annotation.Rollback;
- *
- * import jakarta.transaction.Transactional;
- */
+import jakarta.transaction.Transactional;
+
 @DataJpaTest
-/* ULKOISILLE TIETOKANNOILLE
- * @Transactional
- * @Rollback(true)
- * @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
- */
+@Transactional
+@Rollback(true)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+
 class AliluokkaRepoTests {
 
     @Autowired

@@ -3,6 +3,7 @@ package com.romaalie.budjetointiharjoitustyo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,7 +28,8 @@ public class WebSecurityConfig {
                 .defaultSuccessUrl("/main", true)
                 .permitAll())
                 .logout(logout -> logout.permitAll())
-                .csrf(csrf -> csrf.disable());
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(withDefaults());
 
         return http.build();
     }
