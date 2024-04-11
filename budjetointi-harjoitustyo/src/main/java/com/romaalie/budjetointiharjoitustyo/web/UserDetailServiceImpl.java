@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import com.romaalie.budjetointiharjoitustyo.domain.Kayttaja;
 import com.romaalie.budjetointiharjoitustyo.domain.KayttajaRepository;
 
-
-
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
@@ -21,6 +19,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String nimi) throws UsernameNotFoundException {
         Kayttaja nykyKayttaja = kayttajaRepository.findByNimi(nimi);
+
+        if (nykyKayttaja == null) {
+            throw new UsernameNotFoundException("User not found with username: " + nimi);
+        }
         UserDetails kayttaja = new org.springframework.security.core.userdetails.User(nimi, nykyKayttaja.getSalasanaHash(), AuthorityUtils.createAuthorityList(nykyKayttaja.getKayttajaRooli()));
         return kayttaja;
     }

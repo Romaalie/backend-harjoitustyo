@@ -21,7 +21,4 @@
 - Error handling kun käyttäjä navigoi selaimella olemattomaan paikkaan?
     - Työläs?
 
-- Virheviesti väärälle käyttäjätunnukselle, nykyinen on ruma
-    - Tarvitaanko tähän custom login?
-
 - Vanhojen testimetodien ym. siivoaminen koodista pois.
