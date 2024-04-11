@@ -52,7 +52,7 @@ public class MenoeraController {
     @PreAuthorize("hasAuthority('ROLE_admin') || hasAuthority('ROLE_kayttaja')")
     @RequestMapping("/main")
     public String paasivu(Model model, Authentication authentication) {
-        model.addAttribute("menoerat", menoeraRepository.findAll());
+        model.addAttribute("menoerat", menoeraRepository.findAllByOrderByAikaLeimaDesc());
 
         addLoggedInUserInfo(model, authentication);
 
@@ -72,7 +72,7 @@ public class MenoeraController {
         return "lisays";
     }
 
-    // Aliluokkien dynaamiseen päivittämiseen /lisaa endpointissa.
+    // Aliluokkien dynaamiseen päivittämiseen /lisaa ja /muokkaus sivuilla.
     @PreAuthorize("hasAuthority('ROLE_kayttaja') || hasAuthority('ROLE_admin')")
     @RequestMapping("/getAliluokat/{id}")
     @ResponseBody
@@ -167,6 +167,4 @@ public class MenoeraController {
             model.addAttribute("loggedInUserId", loggedInUserId);
         }
     }
-
-
 }

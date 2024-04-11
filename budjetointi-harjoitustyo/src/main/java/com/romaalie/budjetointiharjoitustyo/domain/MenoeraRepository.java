@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MenoeraRepository extends CrudRepository<Menoera, Long>{
 
+    Iterable<Menoera> findAllByOrderByAikaLeimaDesc();
+
 }
