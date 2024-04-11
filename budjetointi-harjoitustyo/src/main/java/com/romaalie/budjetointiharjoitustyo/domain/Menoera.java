@@ -2,6 +2,8 @@ package com.romaalie.budjetointiharjoitustyo.domain;
 
 import java.time.LocalDate;
 
+import org.springframework.lang.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -28,6 +30,7 @@ public class Menoera {
     private LocalDate aikaLeima;
 
     // Hyödynnetään lähinnä testailuun. Tälle ei löydy kenttää lomakkeista.
+    @Nullable
     private String lisatietoja;
 
     @ManyToOne()

@@ -44,7 +44,7 @@ public class RestMenoeraController {
 
     }
 
-    @PreAuthorize("hasAuthority('rooli_admin')")
+    @PreAuthorize("hasAuthority('ROLE_admin')")
     @DeleteMapping("/menoera/{id}")
     public ResponseEntity<Object> deleteMenoera(@PathVariable("id") Long id) {
         if (id == null) {
@@ -57,7 +57,28 @@ public class RestMenoeraController {
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasAuthority('rooli_admin')")
+    @PreAuthorize("hasAuthority('ROLE_admin')")
+    @PostMapping("/menoera")
+    public ResponseEntity<?> postMenoera(@Valid @RequestBody Menoera menoera) {
+        if (menoera == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        System.out.println("Received Menoera object: " + menoera.toString()); // Add this line for debug
+
+        Menoera tallennettuMenoera = menoeraRepository.save(menoera);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(tallennettuMenoera.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(tallennettuMenoera);
+    }
+
+    // "Toimiva" metodi
+    /* 
+    @PreAuthorize("hasAuthority('ROLE_admin')")
     @PostMapping("/menoera")
     public ResponseEntity<?> postMenoera(@Valid @RequestBody Menoera menoera) {
         if (menoera == null) {
@@ -72,8 +93,8 @@ public class RestMenoeraController {
 
         return ResponseEntity.created(location).body(tallennettuMenoera);
     }
-
-    @PreAuthorize("hasAuthority('rooli_admin')")
+     */
+    @PreAuthorize("hasAuthority('ROLE_admin')")
     @PutMapping("menoera/{id}")
     public ResponseEntity<?> putMenoera(@PathVariable Long id, @Valid @RequestBody Menoera muokattuMenoera) {
         if (!menoeraRepository.existsById(id)) {
