@@ -4,7 +4,8 @@ import java.time.LocalDate;
 
 import org.springframework.lang.Nullable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,10 +13,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Menoera {
 
     @Id
@@ -35,27 +40,26 @@ public class Menoera {
 
     @ManyToOne()
     @JoinColumn(name = "maksajaid")
-    @NotNull
-    @JsonIgnore
+    @Valid
+    //@JsonBackReference
     private Kayttaja maksaja;
 
     @ManyToOne
-    @NotNull
+    @Valid
     @JoinColumn(name = "paaluokkaid")
-    @JsonIgnore
+    //@JsonBackReference
     private Paaluokka paaluokka;
 
     @ManyToOne
-    @NotNull
+    @Valid
     @JoinColumn(name = "aliluokkaid")
-    @JsonIgnore
     private Aliluokka aliluokka;
 
     public Menoera() {
     }
 
     public Menoera(@NotNull @Positive double hinta, @NotNull LocalDate aikaLeima, String lisatietoja,
-            @NotNull Kayttaja maksaja, @NotNull Paaluokka paaluokka, @NotNull Aliluokka aliluokka) {
+            @Valid Kayttaja maksaja, @Valid Paaluokka paaluokka, @Valid Aliluokka aliluokka) {
         this.hinta = hinta;
         this.aikaLeima = aikaLeima;
         this.lisatietoja = lisatietoja;

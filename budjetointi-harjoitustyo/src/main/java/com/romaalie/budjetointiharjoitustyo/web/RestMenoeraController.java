@@ -3,6 +3,7 @@ package com.romaalie.budjetointiharjoitustyo.web;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -58,7 +59,7 @@ public class RestMenoeraController {
     }
 
     @PreAuthorize("hasAuthority('ROLE_admin')")
-    @PostMapping("/menoera")
+    @PostMapping(value = "/menoera", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> postMenoera(@Valid @RequestBody Menoera menoera) {
         if (menoera == null) {
             return ResponseEntity.badRequest().body(null);

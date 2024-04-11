@@ -4,9 +4,6 @@
 
 - Soveltava toiminnallisuus?
 
-- Rest testaus postmanilla/sovelluksen sisäisillä testeillä.
-    - POST ei toimi. Bodyn muoto pitäisi onnistua määrittämään, mutta virheenetsintä on hankalaa.
-
 ## Onko olennaisia arvostelun kannalta ?
 
 - Vanhojen testimetodien ym. siivoaminen koodista pois.

@@ -3,6 +3,10 @@ package com.romaalie.budjetointiharjoitustyo.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +17,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Paaluokka {
 
     @Id
@@ -24,11 +31,15 @@ public class Paaluokka {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "paaluokka")
     @Valid
+    @JsonIgnore
+    //@JsonManagedReference
     private List<Menoera> menoerat;
 
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy= "paaluokka")
     @Valid
+    @JsonIgnore
+    //@JsonManagedReference
     private List<Aliluokka> aliluokat;
 
     public Paaluokka() {
