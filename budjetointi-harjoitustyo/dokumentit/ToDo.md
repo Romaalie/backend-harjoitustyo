@@ -4,6 +4,10 @@
 
 - Soveltava toiminnallisuus?
 
+Lisää valikossa kaksi datepickeriä!!!
+
+dropdown menut ei näy teamsissa.
+
 ## Onko olennaisia arvostelun kannalta ?
 
 - Vanhojen testimetodien ym. siivoaminen koodista pois.
