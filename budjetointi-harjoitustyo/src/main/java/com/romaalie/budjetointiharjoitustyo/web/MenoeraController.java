@@ -41,31 +41,25 @@ public class MenoeraController {
     @Autowired
     private KayttajaRepository kayttajaRepository;
 
-    //Yksinkertainen testisivu virheenetsintää varten
+    // Yksinkertainen testisivu virheenetsintää varten
+    @PreAuthorize("hasAuthority('ROLE_admin') || hasAuthority('ROLE_kayttaja')")
     @GetMapping("/testi")
     public String testisivu() {
         return "testi";
     }
 
-    //Pääsivu, jolla listataan kaikki menoerät.
+    // Pääsivu, jolla listataan kaikki menoerät.
+    @PreAuthorize("hasAuthority('ROLE_admin') || hasAuthority('ROLE_kayttaja')")
     @RequestMapping("/main")
     public String paasivu(Model model, Authentication authentication) {
         model.addAttribute("menoerat", menoeraRepository.findAll());
 
-        if (authentication != null && authentication.isAuthenticated()) {
-            // Get the logged-in user's data
-            String loggedInUserName = authentication.getName();
-            model.addAttribute("loggedInUserName", loggedInUserName);
-            Object loggedInUser = authentication.getPrincipal();
-            model.addAttribute("loggedInUser", loggedInUser);
-            Long loggedInUserId = kayttajaRepository.findByNimi(loggedInUserName).getId();
-            model.addAttribute("loggedInUserId", loggedInUserId);
-        }
+        addLoggedInUserInfo(model, authentication);
 
         return "main";
     }
 
-    //Sivu, jolla voi lisätä uuden menoerän lomakkeen avulla.
+    // Sivu, jolla voi lisätä uuden menoerän lomakkeen avulla.
     @PreAuthorize("hasAuthority('ROLE_admin') || hasAuthority('ROLE_kayttaja')")
     @RequestMapping("/lisays")
     public String lisaysSivu(Model model, Authentication authentication) {
@@ -73,19 +67,13 @@ public class MenoeraController {
         model.addAttribute("paaluokat", paaluokkaRepository.findAll());
         model.addAttribute("aliluokat", aliluokkaRepository.findAll());
         model.addAttribute("kayttajat", kayttajaRepository.findAll());
-        if (authentication != null && authentication.isAuthenticated()) {
-            // Get the logged-in user's data
-            String loggedInUserName = authentication.getName();
-            model.addAttribute("loggedInUserName", loggedInUserName);
-            Object loggedInUser = authentication.getPrincipal();
-            model.addAttribute("loggedInUser", loggedInUser);
-            Long loggedInUserId = kayttajaRepository.findByNimi(loggedInUserName).getId();
-            model.addAttribute("loggedInUserId", loggedInUserId);
-        }
+        
+        addLoggedInUserInfo(model, authentication);
         return "lisays";
     }
 
-    //Aliluokkien dynaamiseen päivittämiseen /lisaa endpointissa.
+    // Aliluokkien dynaamiseen päivittämiseen /lisaa endpointissa.
+    @PreAuthorize("hasAuthority('ROLE_kayttaja') || hasAuthority('ROLE_admin')")
     @RequestMapping("/getAliluokat/{id}")
     @ResponseBody
     public List<Aliluokka> getAliluokatOfPaaluokka(@PathVariable("id") Long id) {
@@ -93,16 +81,12 @@ public class MenoeraController {
         return aliluokat;
     }
 
-    // /lisays sivun lomakkeen lähetys (virheen käsittelyllä).
+    // /lisays ja /muokkaus sivujen lomakkeen lähetys (virheen käsittelyllä).
     @PreAuthorize("hasAuthority('ROLE_kayttaja') || hasAuthority('ROLE_admin')")
     @RequestMapping(value = "/lisaa")
     public String lisaaMenoera(@Valid Menoera menoera, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("paaluokat", paaluokkaRepository.findAll());
-            model.addAttribute("aliluokat", aliluokkaRepository.findAll());
-            model.addAttribute("kayttajat", kayttajaRepository.findAll());
-
-            //model.addAttribute("errors", result.getAllErrors());
+            model.addAttribute("errors", result.getAllErrors());
             return "lisays";
         }
         menoeraRepository.save(menoera);
@@ -144,7 +128,6 @@ public class MenoeraController {
         Optional<Menoera> menoeraOptional = menoeraRepository.findById(id);
 
         if (authentication != null && authentication.isAuthenticated()) {
-            // Get the logged-in user's data
             String loggedInUserName = authentication.getName();
             model.addAttribute("loggedInUserName", loggedInUserName);
             Object loggedInUser = authentication.getPrincipal();
@@ -166,7 +149,6 @@ public class MenoeraController {
                     return "muokkaus";
                 } else {
                     logger.warn("Menoera with ID {} not found for editing.", id);
-                    // Handle case where Menoera with given ID is not found
                     return "redirect:/main";
                 }
             }
@@ -174,32 +156,17 @@ public class MenoeraController {
         return "redirect:/main";
     }
 
-
-    /* 
-
-
-
-    //TÄMÄ ON VANHA JA VAIN TESTAUSTA VARTEN
-    @RequestMapping("/lisays2")
-    public String lisaysSivu2(Model model
-    ) {
-        model.addAttribute("menoera", new Menoera());
-        model.addAttribute("paaluokat", paaluokkaRepository.findAll());
-        model.addAttribute("aliluokat", aliluokkaRepository.findAll());
-        model.addAttribute("kayttajat", kayttajaRepository.findAll());
-        return "lisays2";
-    }
-
-    //TÄMÄ ON VANHA JA VAIN TESTAUSTA VARTEN
-    @RequestMapping(value = "/lisaa2")
-    public String lisaaMenoera2(@Valid Menoera menoera, BindingResult tulos
-    ) {
-        if (tulos.hasErrors()) {
-            return "lisays2";
+    // Kirjautuneen käyttäjän tietojen keruuta. Hyödynnetään avaamaan metodeja/nappuloita jos käyttäjän tiedot matchaavat.
+    private void addLoggedInUserInfo(Model model, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String loggedInUserName = authentication.getName();
+            model.addAttribute("loggedInUserName", loggedInUserName);
+            Object loggedInUser = authentication.getPrincipal();
+            model.addAttribute("loggedInUser", loggedInUser);
+            Long loggedInUserId = kayttajaRepository.findByNimi(loggedInUserName).getId();
+            model.addAttribute("loggedInUserId", loggedInUserId);
         }
-        menoeraRepository.save(menoera);
-        return "redirect:/main";
     }
 
-     */
+
 }

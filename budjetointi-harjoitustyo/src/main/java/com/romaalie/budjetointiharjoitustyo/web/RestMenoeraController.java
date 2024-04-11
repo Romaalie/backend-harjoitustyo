@@ -25,11 +25,13 @@ public class RestMenoeraController {
     @Autowired
     MenoeraRepository menoeraRepository;
 
+    @PreAuthorize("hasAuthority('ROLE_admin') || hasAuthority('ROLE_kayttaja')")
     @GetMapping("/menoerat")
     public ResponseEntity<?> getMenoerat() {
         return ResponseEntity.ok().body(menoeraRepository.findAll());
     }
 
+    @PreAuthorize("hasAuthority('ROLE_admin') || hasAuthority('ROLE_kayttaja')")
     @GetMapping("/menoera/{id}")
     public ResponseEntity<Object> getMenoera(@PathVariable("id") Long id) {
         if (id == null) {

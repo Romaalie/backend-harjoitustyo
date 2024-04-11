@@ -23,7 +23,6 @@ public class MenoeraRestTests {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    @Autowired
     private MockMvc mockMvc;
 
     @BeforeEach

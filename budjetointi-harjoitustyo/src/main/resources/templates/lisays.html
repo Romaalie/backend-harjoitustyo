@@ -10,14 +10,14 @@
 </head>
 
 <body>
-
     <div class="container">
         <h1>Lisää uusi menoerä</h1>
         <div class="col-md-4">
             <form th:object="${menoera}" th:action="@{/lisaa}" method="post">
 
                 <label for="aikaLeima">Päivämäärä</label>
-                <input type="text" id="aikaLeima" th:field="*{aikaLeima}" class="form-control" required />
+                <input type="date" id="aikaLeima" th:field="*{aikaLeima}" class="form-control" required />
+                <div th:if="${#fields.hasErrors('aikaLeima')}" th:errors="*{aikaLeima}"></div>
 
                 <label for="paaluokka">Pääluokka</label>
                 <select class="form-control" id="paaluokka" th:field="*{paaluokka}" name="paaluokka"
@@ -26,6 +26,7 @@
                     <option th:each="paaluokka : ${paaluokat}" th:value="${paaluokka.id}" th:text="${paaluokka.nimi}">
                     </option>
                 </select>
+                <div th:if="${#fields.hasErrors('paaluokka')}" th:errors="*{paaluokka}"></div>
 
                 <div class="form-group" id="aliluokkaGroup">
                     <label for="aliluokka">Aliluokka</label>
@@ -49,9 +50,12 @@
                         th:selected="${kayttaja.id eq loggedInUserId}">
                     </option>
                 </select>
+                <div th:if="${#fields.hasErrors('maksaja')}" th:errors="*{maksaja}"></div>
+
                 <div th:unless="${#authorization.expression('hasRole(''ROLE_admin'')')}">
                     <input type="hidden" id="hiddenLoggedInUserId" name="maksaja" th:value="${loggedInUserId}" />
                 </div>
+                <div th:if="${#fields.hasErrors('maksaja')}" th:errors="*{maksaja}"></div>
 
                 <button type="submit" class="btn btn-primary">Tallenna</button>
                 <a th:href="@{/main}" class="btn btn-secondary">Palaa pääsivulle</a>
@@ -66,13 +70,15 @@
             var paaluokkaId = $("#paaluokka").val();
             var aliluokkaDropdown = $("#aliluokka");
 
+            // Jos pääluokkaa ei ole valittu, tyhjentää aliluokka valikon ja laittaa ohjetekstin
             if (!paaluokkaId) {
                 aliluokkaDropdown.empty();
                 aliluokkaDropdown.append('<option value="">Valitse ensin pääluokka</option>');
                 $("#aliluokkaGroup").show();
-                return; // Exit the function if no Paaluokka is selected
+                return;
             }
 
+            // 
             $.ajax({
                 url: "/getAliluokat/" + paaluokkaId,
                 type: "GET",
@@ -90,13 +96,14 @@
             });
         }
 
-        // Trigger populateAliluokka on page load and when Paaluokka changes
+        // Dokumentin latautuessa ja pääluokan muuttuessa suorittaa ylemmän scriptin.
         $(document).ready(function () {
-            populateAliluokka(); // Populate Aliluokka dropdown on page load
-            $("#paaluokka").change(populateAliluokka); // Update Aliluokka dropdown on Paaluokka change
+            populateAliluokka();
+            $("#paaluokka").change(populateAliluokka);
         });
 
-        //Tämä päivittää piilotetun aliluokka kentän vastaamaan aliluokka pudotusvalikosta valittua arvoa.
+        // Tämä päivittää piilotetun aliluokka kentän vastaamaan aliluokka pudotusvalikosta valittua arvoa.
+        // Piilotettu kenttä varmistaa oikean tiedon lähetyksen, jonka kanssa oli ongelmia.
         function updateSelectedAliluokka() {
             var aliluokkaSelectedId = $("#aliluokka").val();
             $("#selectedAliluokka").val(aliluokkaSelectedId);
@@ -106,8 +113,7 @@
 
     </script>
 
-    <!--Päivämäärä kenttään datepicker kalenteriominaisuus-->
-    <!--Tämä itse asiassa antaa mahdollisuuden asettaa "väärä arvo" kenttään ja jumittaa koko jutun, koska maksaja kenttä lukittu ja arvot eivät pysy refreshissä.-->
+    <!--Päivämäärä kenttään datepicker kalenteriominaisuus, hiukan erilainen kuin selaimen oletus datepicker-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
@@ -121,9 +127,9 @@
             });
         });
     </script>
+
     <!--Käyttäjätietojen loggaaminen virheenetsintää varten-->
     <script>
-        // Log the value of loggedInUserName to the console
         console.log("Logged In User Name:", /*[[${loggedInUserName}]]*/);
         console.log("Logged In User Object:", /*[[${loggedInUser}]]*/)
         console.log("Logged In User Id", /*[[${loggedInUserId}]]*/)

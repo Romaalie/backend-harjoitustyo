@@ -27,6 +27,7 @@ public class Menoera {
     @NotNull
     private LocalDate aikaLeima;
 
+    // Hyödynnetään lähinnä testailuun. Tälle ei löydy kenttää lomakkeista.
     private String lisatietoja;
 
     @ManyToOne()
@@ -42,6 +43,7 @@ public class Menoera {
     private Paaluokka paaluokka;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "aliluokkaid")
     @JsonIgnore
     private Aliluokka aliluokka;
